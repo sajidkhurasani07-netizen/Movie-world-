@@ -1,25 +1,105 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Original movie reviews and official viewing guides"><title>Movies World</title>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0b12">
+<meta name="description" content="Movies World — discover films, trailers and reviews from authorized sources.">
+<title>Movies World | Discover What to Watch</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#101018;color:#f8f8fc;font-family:Arial,sans-serif}header{padding:16px 5%;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#171722;position:sticky;top:0}.logo{font-size:22px;font-weight:bold}.logo b{color:#ff3d67}a{color:#ff9db2}nav a{margin:0 7px;text-decoration:none;color:#ddd}input{padding:10px;border-radius:10px;background:#252535;color:white;border:1px solid #444}main{max-width:1100px;margin:auto;padding:22px 5%}.hero{padding:30px;border-radius:20px;background:linear-gradient(120deg,#27274b,#71264c,#151522)}h1{font-size:clamp(35px,7vw,60px);margin:10px 0}.muted{color:#bbbccd;line-height:1.6}.filters{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.filters button,.watch{padding:9px 12px;border:0;border-radius:9px;background:#303044;color:white;cursor:pointer}.filters button.active,.watch{background:#ff3d67}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.card{background:#1b1b27;border-radius:14px;overflow:hidden}.poster{height:160px;display:grid;place-items:center;text-align:center;font-size:22px;font-weight:bold;padding:12px;background:linear-gradient(135deg,var(--a),var(--b))}.info{padding:13px}.small{font-size:13px;color:#b7b7c8}.review{font-size:14px;color:#ddd;line-height:1.5}.watch{width:100%}.page{margin-top:20px;padding:18px;background:#191923;border:1px solid #343448;border-radius:12px;line-height:1.6;color:#c9c9d6}footer{text-align:center;padding:25px;color:#999}@media(min-width:650px){.grid{grid-template-columns:repeat(3,1fr)}.poster{height:210px}}@media(min-width:950px){.grid{grid-template-columns:repeat(4,1fr)}}
-</style></head><body>
-<header><div class="logo">MOVIES <b>WORLD</b></div><nav><a href="#home">Home</a><a href="#movies">Movies</a><a href="#about">About</a><a href="#contact">Contact</a><a href="#privacy">Privacy</a></nav><input id="search" placeholder="Search titles..." aria-label="Search"></header>
-<main id="home"><section class="hero"><div class="small">REVIEWS · TRAILERS · WATCH GUIDES</div><h1>Movies World</h1><p class="muted">Discover original movie reviews, release information and official viewing options. Find your next movie night.</p><a href="#movies">Explore movie guides ↓</a></section>
-<h2 id="movies">Featured Movie Guides</h2><p id="count" class="small"></p><div class="filters"><button class="active" data-cat="All">All</button><button data-cat="Bollywood">Bollywood</button><button data-cat="Hollywood">Hollywood</button><button data-cat="Korean">Korean</button><button data-cat="Series">Web Series</button></div><section class="grid" id="grid"></section>
-<section class="page" id="about"><h2>About Movies World</h2>Movies World is an independent entertainment guide for discovering films, reading original reviews and finding official, authorized viewing options. We do not host unauthorized copies of copyrighted movies.</section>
-<section class="page" id="contact"><h2>Contact Us</h2>For corrections or business enquiries, contact: <b>ADD-YOUR-EMAIL-HERE</b>. Replace this placeholder with an email address you control before publishing.</section>
-<section class="page" id="privacy"><h2>Privacy Policy</h2>This starter site does not include user accounts, payments, or custom analytics. Hosting providers and linked services may process technical data under their own policies. Update this policy if you add advertising, analytics, cookies, contact forms or embedded players. This sample is not legal advice.</section>
-<section class="page"><b>Important:</b> Titles and review text below are sample content. Replace them with original, accurate material. Use only posters, trailers and video sources you have permission to display. This demo does not host movies or provide downloads.</section>
-</main><footer>© <span id="year"></span> Movies World · Independent movie guide</footer>
+:root{--bg:#090910;--panel:#151520;--panel2:#1d1d2a;--text:#f7f7fb;--muted:#a8a8bc;--red:#f0445e;--gold:#f7c66b;--line:#ffffff14}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+a{color:inherit;text-decoration:none}button,input{font:inherit}
+.topbar{position:sticky;top:0;z-index:10;background:#090910ed;backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.navwrap{max-width:1250px;margin:auto;padding:14px 22px;display:flex;align-items:center;gap:22px}
+.logo{font-weight:950;letter-spacing:-1px;font-size:1.25rem;white-space:nowrap}.logo span{color:var(--red)}
+nav{display:flex;gap:20px;margin-left:auto}nav a{color:#c6c6d4;font-size:.94rem}nav a:hover{color:white}
+.search{width:min(250px,34vw);background:#191923;border:1px solid #333344;color:white;border-radius:999px;padding:10px 15px;outline:none}.search:focus{border-color:var(--red)}
+.menu{display:none;border:1px solid #333344;background:#191923;color:white;border-radius:9px;padding:8px 10px}
+main{max-width:1250px;margin:auto;padding:22px}
+.hero{min-height:380px;border-radius:24px;overflow:hidden;position:relative;display:flex;align-items:center;padding:clamp(25px,6vw,68px);background:radial-gradient(ellipse at 78% 20%,#7c243f99,transparent 35%),radial-gradient(ellipse at 85% 80%,#c07b3150,transparent 30%),linear-gradient(110deg,#191927 0%,#171722 55%,#311522 100%);border:1px solid #ffffff13}
+.hero:after{content:"MW";position:absolute;right:4%;bottom:-90px;font-size:clamp(13rem,32vw,25rem);font-weight:1000;letter-spacing:-25px;color:#ffffff07;pointer-events:none}
+.hero-content{position:relative;z-index:1;max-width:650px}.eyebrow{color:var(--gold);font-size:.78rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase}
+h1{font-size:clamp(2.7rem,7vw,5.2rem);line-height:.98;letter-spacing:-3px;margin:14px 0 18px}.hero p{color:#d0d0df;line-height:1.7;max-width:570px;font-size:1.04rem}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:10px;padding:12px 18px;font-weight:800;border:1px solid transparent;cursor:pointer}.btn-primary{background:var(--red);color:white}.btn-primary:hover{background:#ff5a70}.btn-secondary{background:#ffffff0b;border-color:#ffffff2b;color:white}
+.trust{display:flex;gap:16px;flex-wrap:wrap;margin-top:25px;color:#c1c1d0;font-size:.84rem}.trust span:before{content:"✓";color:#7fe0b2;font-weight:900;margin-right:7px}
+.section{margin-top:38px}.section-title{display:flex;justify-content:space-between;align-items:end;gap:14px;margin-bottom:16px}.section-title h2{font-size:1.55rem;margin:0;letter-spacing:-.5px}.section-title p{margin:5px 0 0;color:var(--muted);font-size:.9rem}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.filter{border:1px solid #333344;background:#151520;color:#d7d7e3;padding:9px 15px;border-radius:999px;cursor:pointer}.filter.active,.filter:hover{background:var(--red);border-color:var(--red);color:white}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:transform .2s,border-color .2s}.card:hover{transform:translateY(-4px);border-color:#ffffff35}
+.poster{height:205px;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;overflow:hidden;background:linear-gradient(135deg,var(--c1),var(--c2))}
+.poster:before{content:"";position:absolute;width:190px;height:190px;border:1px solid #ffffff25;border-radius:50%;right:-60px;top:-60px;box-shadow:0 0 0 20px #ffffff08,0 0 0 40px #ffffff05}.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0009,transparent 70%)}
+.poster-title{z-index:1;font-weight:950;font-size:1.45rem;line-height:1.1;text-shadow:0 3px 12px #0007;max-width:220px}.tag{position:absolute;top:12px;left:12px;z-index:2;background:#090910b8;border:1px solid #ffffff24;border-radius:7px;padding:5px 8px;font-size:.7rem;font-weight:800}
+.card-body{padding:14px}.card-title{font-weight:850;margin-bottom:6px}.meta{color:var(--muted);font-size:.84rem}.card-actions{display:flex;gap:8px;margin-top:13px}.watch{flex:1;background:#292938;color:white;border:1px solid #ffffff12;border-radius:8px;padding:9px;cursor:pointer;font-weight:750}.watch:hover{background:var(--red)}.review{background:transparent;border:1px solid #3c3c4d;color:#d9d9e5;border-radius:8px;padding:9px;cursor:pointer}
+.empty{grid-column:1/-1;color:var(--muted);padding:30px;text-align:center;border:1px dashed #444454;border-radius:14px}
+.promo{margin-top:36px;padding:25px;border-radius:18px;background:linear-gradient(110deg,#201927,#171722);border:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}.promo h2{margin:0 0 8px}.promo p{margin:0;color:var(--muted);line-height:1.6;max-width:720px}
+.info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.info{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}.info b{display:block;margin-bottom:8px}.info p{color:var(--muted);line-height:1.6;margin:0;font-size:.92rem}
+footer{margin-top:45px;border-top:1px solid var(--line);padding:25px 22px;color:var(--muted);font-size:.87rem}.footer-inner{max-width:1250px;margin:auto;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}.footer-links{display:flex;gap:16px;flex-wrap:wrap}
+.modal{display:none;position:fixed;inset:0;z-index:30;background:#000d;align-items:center;justify-content:center;padding:16px}.modal.open{display:flex}.modalbox{width:min(760px,100%);background:#171722;border:1px solid #ffffff25;border-radius:16px;overflow:hidden}.modalhead{display:flex;justify-content:space-between;align-items:center;padding:15px 18px;border-bottom:1px solid var(--line)}.close{border:0;background:#30303e;color:white;border-radius:8px;padding:8px 12px;cursor:pointer}.videobox{aspect-ratio:16/9;background:#07070b;display:flex;align-items:center;justify-content:center;padding:25px;text-align:center;color:#c4c4d2}.videobox video{display:none;width:100%;height:100%}.modalnote{padding:14px 18px;color:var(--muted);font-size:.88rem;line-height:1.6}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.poster{height:230px}}
+@media(min-width:900px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.poster{height:245px}}
+@media(max-width:700px){.navwrap{gap:12px;flex-wrap:wrap}.menu{display:block;margin-left:auto}nav{display:none;order:4;width:100%;margin:0;padding:10px 0 3px}nav.show{display:flex}.search{order:3;width:100%;max-width:none}.hero{min-height:360px}.info-grid{grid-template-columns:1fr}h1{letter-spacing:-1.5px}.section-title{align-items:start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="navwrap">
+<a class="logo" href="#home">MOVIES <span>WORLD</span></a>
+<button class="menu" id="menu" aria-label="Open menu">☰ Menu</button>
+<nav id="nav"><a href="#home">Home</a><a href="#movies">Explore</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+<input class="search" id="search" type="search" placeholder="Search titles..." aria-label="Search titles">
+</div></div>
+<main id="home">
+<section class="hero"><div class="hero-content">
+<div class="eyebrow">Your next watch starts here</div>
+<h1>Find your next<br>favourite story.</h1>
+<p>Explore films, series, trailers and recommendations in one place. Clean design, easy search and a better viewing experience on mobile.</p>
+<div class="actions"><a class="btn btn-primary" href="#movies">Explore titles&nbsp; →</a><a class="btn btn-secondary" href="#about">About Movies World</a></div>
+<div class="trust"><span>Mobile friendly</span><span>Easy search</span><span>Authorized sources only</span></div>
+</div></section>
+
+<section class="section" id="movies">
+<div class="section-title"><div><h2>Explore titles</h2><p>Choose a category or search for a title.</p></div><span id="count" class="meta"></span></div>
+<div class="filters" id="filters">
+<button class="filter active" data-cat="All">All titles</button><button class="filter" data-cat="Bollywood">Bollywood</button><button class="filter" data-cat="Hollywood">Hollywood</button><button class="filter" data-cat="Korean">Korean</button><button class="filter" data-cat="Series">Web series</button>
+</div>
+<div class="grid" id="grid"></div>
+</section>
+
+<section class="promo"><div><h2>More than just a movie list</h2><p>Use this space for official trailers, film reviews, cast details and links to legal streaming services. Add only videos and artwork you own or have permission to use.</p></div><a class="btn btn-primary" href="#about">Learn more</a></section>
+
+<section class="section" id="about"><div class="section-title"><div><h2>About Movies World</h2><p>A simple, independent entertainment discovery site.</p></div></div>
+<div class="info-grid">
+<div class="info"><b>🎬 Discover</b><p>Browse curated titles by category and search for a film or series quickly.</p></div>
+<div class="info"><b>▶ Watch responsibly</b><p>Link to official trailers or authorized streaming sources. This demo does not include full movie files.</p></div>
+<div class="info" id="contact"><b>✉ Contact</b><p>Replace <strong>ADD-YOUR-EMAIL-HERE</strong> in this file with your contact email before publishing.</p></div>
+</div>
+</section>
+<section class="section"><div class="info"><b>Copyright & privacy</b><p>Movies World is a demonstration website. Sample title cards are illustrative only. Do not upload or embed copyrighted movies without permission. If you add analytics, advertising, forms or other third-party services, update the privacy policy to explain what data they collect. Ad-network approval and earnings are not guaranteed.</p></div></section>
+</main>
+<footer><div class="footer-inner"><div>© <span id="year"></span> <strong>Movies World</strong>. All rights reserved.</div><div class="footer-links"><a href="#about">About</a><a href="#contact">Contact</a><a href="#about">Copyright & Privacy</a></div></div></footer>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Watch title"><div class="modalbox"><div class="modalhead"><strong id="modalTitle">Watch online</strong><button class="close" id="close">Close ✕</button></div><div class="videobox"><div id="message">This is a sample card. Add an authorized trailer or video URL in the titles data to play a video here.</div><video id="video" controls controlsList="nodownload" playsinline></video></div><div class="modalnote">Only use video sources you own or have permission to stream. Sample cards do not include movie files.</div></div></div>
 <script>
-const data=[
-["City of Dreams","Bollywood","2025","#7b244e","#ed714f","Sample review: write your own comments about performances, story, music and who may enjoy this film."],
-["Beyond the Stars","Hollywood","2025","#132e64","#4ca6c8","Sample review: add original spoiler-free opinions and verified film information."],
-["Seoul Stories","Korean","2024","#573d86","#d77d9b","Sample guide: describe the genre, mood and themes in your own words."],
-["The Last Kingdom","Series","2025","#4d3428","#b88743","Sample series guide: explain the premise and audience suitability."],
-["Midnight Run","Hollywood","2024","#152f32","#1e8d87","Sample review: add original commentary and official trailer links."],
-["Dil Ki Duniya","Bollywood","2025","#9e3436","#f2a24b","Sample review: discuss acting, soundtrack and pacing in your own words."],
-["Hidden Truth","Korean","2024","#23384e","#7395c1","Sample guide: explain the genre without copying other websites."],
-["New Beginnings","Series","2025","#334f38","#b5b96c","Sample series guide: include accurate episode details and spoiler notes."]
-];let cat="All";const grid=document.querySelector("#grid"),search=document.querySelector("#search");
-function render(){let q=search.value.toLowerCase().trim(),list=data.filter(x=>(cat==="All"||x[1]===cat)&&x.slice(0,3).join(" ").toLowerCase().includes(q));document.querySelector("#count").textContent=list.length+" guides";grid.innerHTML=list.map(x=>`<article class="card"><div class="poster" style="--a:${x[3]};--b:${x[4]}">${x[0]}</div><div class="info"><b>${x[0]}</b><div class="small">${x[1]} · ${x[2]}</div><p class="review">${x[5]}</p><button class="watch" onclick="alert('Add an authorized official trailer or streaming link for this title. No movie is hosted in this demo.')">Official viewing guide</button></div></article>`).join("")||"<p>No titles found.</p>"}document.querySelectorAll(".filters button").forEach(b=>b.onclick=()=>{cat=b.dataset.cat;document.querySelectorAll(".filters button").forEach(x=>x.classList.toggle("active",x===b));render()});search.oninput=render;document.querySelector("#year").textContent=new Date().getFullYear();render();
-</script></body></html>
+const titles=[
+{title:"City of Dreams",cat:"Bollywood",year:"2025",c1:"#8d244b",c2:"#f0784c"},
+{title:"Beyond the Stars",cat:"Hollywood",year:"2025",c1:"#142d63",c2:"#3d9bc4"},
+{title:"Seoul Stories",cat:"Korean",year:"2024",c1:"#54347f",c2:"#d8799d"},
+{title:"The Last Kingdom",cat:"Series",year:"2025",c1:"#422a24",c2:"#b9823e"},
+{title:"Midnight Run",cat:"Hollywood",year:"2024",c1:"#102e32",c2:"#1d8887"},
+{title:"Dil Ki Duniya",cat:"Bollywood",year:"2025",c1:"#8d292d",c2:"#f3a14e"},
+{title:"Paper Moon",cat:"Korean",year:"2024",c1:"#283d63",c2:"#9a9de0"},
+{title:"Hidden Chapters",cat:"Series",year:"2025",c1:"#234a3c",c2:"#9cb85a"}
+];
+let category="All";
+const grid=document.getElementById("grid"),search=document.getElementById("search"),count=document.getElementById("count");
+function render(){const q=search.value.trim().toLowerCase();const list=titles.filter(t=>(category==="All"||t.cat===category)&&(t.title+" "+t.cat+" "+t.year).toLowerCase().includes(q));count.textContent=list.length+" titles";grid.innerHTML=list.length?list.map((t,i)=>`<article class="card"><div class="poster" style="--c1:${t.c1};--c2:${t.c2}"><span class="tag">${t.cat}</span><div class="poster-title">${t.title}</div></div><div class="card-body"><div class="card-title">${t.title}</div><div class="meta">${t.year} · ${t.cat}</div><div class="card-actions"><button class="watch" data-title="${t.title}">▶ View details</button><button class="review" data-title="${t.title}" aria-label="About ${t.title}">ⓘ</button></div></div></article>`).join(""):'<div class="empty">No titles found. Try another search or category.</div>'}
+document.getElementById("filters").addEventListener("click",e=>{const b=e.target.closest("button[data-cat]");if(!b)return;category=b.dataset.cat;document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x===b));render()});
+search.addEventListener("input",render);
+document.getElementById("menu").addEventListener("click",()=>document.getElementById("nav").classList.toggle("show"));
+const modal=document.getElementById("modal"),video=document.getElementById("video");
+function showTitle(title){document.getElementById("modalTitle").textContent=title;document.getElementById("message").style.display="block";video.style.display="none";video.pause();video.removeAttribute("src");modal.classList.add("open")}
+grid.addEventListener("click",e=>{const b=e.target.closest("button[data-title]");if(b)showTitle(b.dataset.title)});
+function closeModal(){modal.classList.remove("open");video.pause()}
+document.getElementById("close").addEventListener("click",closeModal);modal.addEventListener("click",e=>{if(e.target===modal)closeModal()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+document.getElementById("year").textContent=new Date().getFullYear();render();
+</script>
+</body>
+</html>
